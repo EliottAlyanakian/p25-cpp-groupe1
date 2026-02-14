@@ -120,199 +120,223 @@ Pour décider de l'affichage, on peut donc passer à cette méthode le type de l
 // the type enum
 enum Order
 {
-     Prefix,  // will be set to 0
-     Infix,   // will be set to the previous + 1
-     Postfix, // idem
+    Prefix,  // will be set to 0
+    Infix,   // will be set to the previous + 1
+    Postfix, // idem
 };
 
 void enum_values()
 {
-     std::cout << "Prefix is " << Order::Prefix << std::endl;
-     std::cout << "Infix is " << Order::Infix << std::endl;
-     std::cout << "Postfix is " << Order::Postfix << std::endl;
+    std::cout << "Prefix is " << Order::Prefix << std::endl;
+    std::cout << "Infix is " << Order::Infix << std::endl;
+    std::cout << "Postfix is " << Order::Postfix << std::endl;
 }
-
 
 struct Node
 {
-     int value;
-     Node* left;
-     Node* right;
+    int value;
+    Node *left;
+    Node *right;
 
-     Node(int v) : value(v), left(nullptr), right(nullptr) {}
+    Node(int v) : value(v), left(nullptr), right(nullptr) {}
 
+    void insert(int v)
+    {
+        if (v == value)
+        {
+            return;
+        }
 
-     void insert(int v)
-     {
-          if (v == value) {
-               return;
-          }
-          
-          if (v < value) {
-               if (left == nullptr) {
-                    left = new Node(v);
-               } else {
-                    left->insert(v);
-               }
-          } else {
-               if (right == nullptr) {
-                    right = new Node(v);
-               } else {
-                    right->insert(v);
-               }
-          }
-     }
+        if (v < value)
+        {
+            if (left == nullptr)
+            {
+                left = new Node(v);
+            }
+            else
+            {
+                left->insert(v);
+            }
+        }
+        else
+        {
+            if (right == nullptr)
+            {
+                right = new Node(v);
+            }
+            else
+            {
+                right->insert(v);
+            }
+        }
+    }
 
+    void depth(Order o)
+    {
+        if (o == Order::Prefix)
+        {
+            std::cout << value << " ";
+        }
 
-     void depth(Order o)
-     {
-          if (o == Order::Prefix) {
-               std::cout << value << " ";
-          }
+        if (left != nullptr)
+        {
+            left->depth(o);
+        }
 
-          if (left != nullptr) {
-               left->depth(o);
-          }
+        if (o == Order::Infix)
+        {
+            std::cout << value << " ";
+        }
 
-          if (o == Order::Infix) {
-               std::cout << value << " ";
-          }
+        if (right != nullptr)
+        {
+            right->depth(o);
+        }
 
-          if (right != nullptr) {
-               right->depth(o);
-          }
+        if (o == Order::Postfix)
+        {
+            std::cout << value << " ";
+        }
+    }
 
-          if (o == Order::Postfix) {
-               std::cout << value << " ";
-          }
-     }
+    bool search(int v)
+    {
+        if (v == value)
+        {
+            return true;
+        }
 
+        if (v < value)
+        {
+            if (left == nullptr)
+            {
+                return false;
+            }
+            return left->search(v);
+        }
+        else
+        {
+            if (right == nullptr)
+            {
+                return false;
+            }
+            return right->search(v);
+        }
+    }
 
-     bool search(int v)
-     {
-          if (v == value) {
-               return true;
-          }
+    void print(int ecart = 0)
+    {
+        if (right != nullptr)
+        {
+            right->print(ecart + 2);
+        }
 
-          if (v < value) {
-               if (left == nullptr) {
-                    return false;
-               }
-               return left->search(v);
-          } else {
-               if (right == nullptr) {
-                    return false;
-               }
-               return right->search(v);
-          }
-     }
+        for (int i = 0; i < ecart; i += 1)
+        {
+            std::cout << ' ';
+        }
+        std::cout << value << std::endl;
 
-   
-     void print(int ecart= 0)
-     {
-          if (right != nullptr) {
-               right->print(ecart + 2);
-          }
-
-          for (int i = 0; i < ecart; i+=1) {
-               std::cout << ' ';
-          }
-          std::cout << value << std::endl;
-
-          if (left != nullptr) {
-                left->print(ecart + 2);
-
-          }
-     }
+        if (left != nullptr)
+        {
+            left->print(ecart + 2);
+        }
+    }
 };
 
 struct BinaryTree
 {
-     Node* root;
+    Node *root;
 
-     BinaryTree() : root(nullptr) {}
+    BinaryTree() : root(nullptr) {}
 
-     void insert(int v)
-     {
-          if (root == nullptr) {
-               root = new Node(v);
-          } else {
-               root->insert(v);
-          }
-     }
+    void insert(int v)
+    {
+        if (root == nullptr)
+        {
+            root = new Node(v);
+        }
+        else
+        {
+            root->insert(v);
+        }
+    }
 
-     void depth(Order o)
-     {
-          if (root != nullptr) {
-               root->depth(o);
-          }
-          std::cout << std::endl;
-     }
+    void depth(Order o)
+    {
+        if (root != nullptr)
+        {
+            root->depth(o);
+        }
+        std::cout << std::endl;
+    }
 
-     bool search(int v)
-     {
-          if (root == nullptr) {
-               return false;
-          }
-          return root->search(v);
-     }
+    bool search(int v)
+    {
+        if (root == nullptr)
+        {
+            return false;
+        }
+        return root->search(v);
+    }
 
-     void print()
-     {
-          if (root != nullptr) {
-               root->print();
-          }
-     }
+    void print()
+    {
+        if (root != nullptr)
+        {
+            root->print();
+        }
+    }
 };
 
 int main()
 {
-     enum_values(); // exemple pour voir un enum
+    enum_values(); // exemple pour voir un enum
 
-     // on construit l'arbre
+    // on construit l'arbre
 
-     // cet ordre d'insertion donne un bel arbre binaire équilibré
-     // ce qui n'est bien sûr pas toujours le cas...
-     // il existe des algorithmes pour garder l'arbre équilibré
-     // mais c'est en dehors de notre cadre d'une simple programmation
-     BinaryTree b;
-     b.insert(8);
-     b.insert(4);
-     b.insert(6);
-     b.insert(12);
-     b.insert(10);
-     b.insert(11);
-     b.insert(9);
-     b.insert(2);
-     b.insert(1);
-     b.insert(3);
-     b.insert(5);
-     b.insert(14);
-     b.insert(15);
-     b.insert(13);
-     b.insert(7);
-     b.print();
+    // cet ordre d'insertion donne un bel arbre binaire équilibré
+    // ce qui n'est bien sûr pas toujours le cas...
+    // il existe des algorithmes pour garder l'arbre équilibré
+    // mais c'est en dehors de notre cadre d'une simple programmation
+    BinaryTree b;
+    b.insert(8);
+    b.insert(4);
+    b.insert(6);
+    b.insert(12);
+    b.insert(10);
+    b.insert(11);
+    b.insert(9);
+    b.insert(2);
+    b.insert(1);
+    b.insert(3);
+    b.insert(5);
+    b.insert(14);
+    b.insert(15);
+    b.insert(13);
+    b.insert(7);
+    b.print();
 
-     std::cout << "Infix ";
-     b.depth(Order::Infix);
-     std::cout << "Postfix ";
-     b.depth(Order::Postfix);
-     std::cout << "Prefix ";
-     b.depth(Order::Prefix);
-     std::cout << std::boolalpha << b.search(25) << std::endl;
-     std::cout << std::boolalpha << b.search(2) << std::endl;
+    std::cout << "Infix ";
+    b.depth(Order::Infix);
+    std::cout << "Postfix ";
+    b.depth(Order::Postfix);
+    std::cout << "Prefix ";
+    b.depth(Order::Prefix);
+    std::cout << std::boolalpha << b.search(25) << std::endl;
+    std::cout << std::boolalpha << b.search(2) << std::endl;
 
-     std::cout << "Cet arbre est dégénéré:\n";
-     BinaryTree bad1;
-     for (int i = 1; i < 16; i++)
-          bad1.insert(i);
-     bad1.print();
+    std::cout << "Cet arbre est dégénéré:\n";
+    BinaryTree bad1;
+    for (int i = 1; i < 16; i++)
+        bad1.insert(i);
+    bad1.print();
 
-     std::cout << "\ncelui là aussi:\n";
-     BinaryTree bad2;
-     for (int i = 30; i > 15; i--)
-          bad2.insert(i);
-     bad2.print();
+    std::cout << "\ncelui là aussi:\n";
+    BinaryTree bad2;
+    for (int i = 30; i > 15; i--)
+        bad2.insert(i);
+    bad2.print();
 }
 
 /* l'exécution de ce programme donne:
