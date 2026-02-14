@@ -20,7 +20,6 @@
 // La liste est une structure de données qui a beaucoup de défauts
 // mais qui est un cas d'école sympa à implémenter en c++ et sans IA générative bien sûr -
 
-
 // Il existe d'autres types de listes chaînées.
 // La liste doublement chaînées où:
 //    - chaque cellule pointe vers sa cellule précédente et vers sa cellule suivante
@@ -28,7 +27,7 @@
 
 // La liste circulaire où:
 //    - chaque cellule pointe vers sa cellule suivante
-//    - la dernière cellule pointe vers la première cellule 
+//    - la dernière cellule pointe vers la première cellule
 
 // Ces deux dernières listes sont plus complexes à implémenter, implémentez une liste simplement chaînée
 // avec les opérations de base:
@@ -51,82 +50,106 @@
 // Voici un exemple de main qui doit fonctionner avec votre liste chaînée:
 #include <iostream>
 
-struct Cell {
+struct Cell
+{
   int value;
-  Cell* next;
+  Cell *next;
 };
 
-struct LinkedList {
-  int size=0;
-  Cell* head=nullptr;
+struct LinkedList
+{
+  int size = 0;
+  Cell *head = nullptr;
 
-
-  void push_front(int valeur){
-    Cell* new_cell=new Cell;
-    new_cell->value=valeur;
-    new_cell->next=head;
-    head=new_cell;
-    size+=1;
+  void push_front(int valeur)
+  {
+    Cell *new_cell = new Cell;
+    new_cell->value = valeur;
+    new_cell->next = head;
+    head = new_cell;
+    size += 1;
   }
-  bool find(int valeur){
-    Cell* actuel = head;
-    while (actuel != nullptr){
-        if (actuel->value == valeur){
-            return true;
-        }
-        actuel = actuel->next;
+  bool find(int valeur)
+  {
+    Cell *actuel = head;
+    while (actuel != nullptr)
+    {
+      if (actuel->value == valeur)
+      {
+        return true;
+      }
+      actuel = actuel->next;
     }
     return false;
-}
-
   }
-  void remove(int valeur){ //il y a des erreurs ici
-    Cell* actuel=head;
-    while (actuel->next!=nullptr){
-        if ((actuel->next)->value==valeur){
-            Cell* supprime=actuel->next;
-            actuel->next=supprime->next;
-            size-=1;
-            delete supprime;
-        }
-        actuel=actuel->next;
 
+  void remove(int valeur)
+  {
+    // supprimer la tête de liste
+    while (head != nullptr && head->value == valeur)
+    {
+      Cell *supprime = head;
+      head = head->next;
+      size -= 1;
+      delete supprime;
+    }
+    
+    // supprimer les autres éléments
+    Cell *actuel = head;
+    while (actuel != nullptr && actuel->next != nullptr)
+    {
+      if (actuel->next->value == valeur)
+      {
+        Cell *supprime = actuel->next;
+        actuel->next = supprime->next;
+        size -= 1;
+        delete supprime;
       }
+      else
+      {
+        actuel = actuel->next;
+      }
+    }
   }
 
-  bool is_empty(){
-    return size==0;
-    }
-  void print(){
-    Cell* actuel=head;
-    while (actuel!=nullptr){
-        std::cout<<actuel->value<<" ";
-        actuel=actuel->next;
-    }
-    std::cout<<std::endl;
+  bool is_empty()
+  {
+    return size == 0;
   }
-  
+
+  void print()
+  {
+    Cell *actuel = head;
+    while (actuel != nullptr)
+    {
+      std::cout << actuel->value << " ";
+      actuel = actuel->next;
+    }
+    std::cout << std::endl;
+  }
 };
 
-int main () {
-    LinkedList list;
 
-    list.push_front(45);
-    list.push_front(12);
-    list.push_front(42);
-    list.push_front(33);
-    list.push_front(17);
+int main()
+{
+  LinkedList list;
 
-    list.print(); // Affiche: 17 33 42 12 45
-                  // oui l'ordre est inversé car on ajoute en tête de liste...
+  list.push_front(45);
+  list.push_front(12);
+  list.push_front(42);
+  list.push_front(33);
+  list.push_front(17);
 
-    list.remove(88); // Ne fait rien (et pas d'exception à générer)
-    list.remove(17); // Attention on supprime la tête de liste !!
-    list.remove(45); // Attention on supprime la queue de liste !!
-    list.remove(42); // Supprime un élément du milieu de liste
-    // que de cas à gérer... que de pointeurs à mettre à jour...
+  list.print(); // Affiche: 17 33 42 12 45
+                // oui l'ordre est inversé car on ajoute en tête de liste...
 
-    list.print();
+  list.remove(88); // Ne fait rien (et pas d'exception à générer)
+  list.remove(17); // Attention on supprime la tête de liste !!
+  list.remove(45); // Attention on supprime la queue de liste !!
+  list.remove(42); // Supprime un élément du milieu de liste
+  // que de cas à gérer... que de pointeurs à mettre à jour...
 
-    return 0;
+  list.print();
+
+  return 0;
 }
