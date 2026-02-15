@@ -27,7 +27,7 @@ struct Vertex
 
         std::cout << "Vertex " << name << " est connecté a : ";
 
-        for (size_t k = 0; k < v.size(); k++)
+        for (int k = 0; k < v.size(); k++)
         {
             std::cout << " -> " << v[k]->end->name
                       << " (poids: " << v[k]->value << ")";
@@ -61,7 +61,7 @@ struct Graph
 
     void print()
     {
-        for (size_t k = 0; k < sommet.size(); k++)
+        for (int k = 0; k < sommet.size(); k++)
         {
             sommet[k]->printV();
         }
